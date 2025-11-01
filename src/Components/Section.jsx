@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Stats = () => {
+const Section = () => {
   return (
     <section className="bg-purple-600 py-16 px-6">
       <div className="container mx-auto">
@@ -37,4 +37,4 @@ const Stats = () => {
   );
 };
 
-export default Stats;
+export default Section;
