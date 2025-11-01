@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import downloadIcon from '../assets/icon-downloads.png';
 import starIcon from '../assets/icon-ratings.png';
+import Loading from './Loading.jsx';
 
 const AppSection = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const AppSection = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center py-16">Loading...</div>;
+    return <Loading />;
   }
 
   return (

@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AppNotFound from './AppNotFound.jsx';
+import Loading from './Loading.jsx';
 
 const AppDetails = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const AppDetails = () => {
   const [installed, setInstalled] = useState(false);
 
   useEffect(() => {
-    fetch('https://raw.githubusercontent.com/FarhanShuvon/hero-app-json/main/apps.json')
+    fetch('https://raw.githubusercontent.com/FarhanShuvon/hero-app-json/refs/heads/main/apps.json')
       .then(response => response.json())
       .then(data => {
         const foundApp = data.find(app => app.id === parseInt(id));
@@ -48,7 +49,7 @@ const AppDetails = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-16">Loading...</div>;
+    return <Loading />;
   }
 
   // Show AppNotFound component if app doesn't exist
