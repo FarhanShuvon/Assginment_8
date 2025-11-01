@@ -4,11 +4,13 @@ import Home from '../Components/Home';
 import AllApps from '../Components/AllApps';
 import Installation from '../Components/Installation';
 import AppDetails from '../Components/AppDetails';
+import NotFound from '../Components/NotFound';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/',
@@ -25,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: '/installation',
         element: <Installation />
+      },
+      {
+        path: '*',
+        element: <NotFound />
       }
     ]
   }

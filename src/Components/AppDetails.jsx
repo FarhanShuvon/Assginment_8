@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import AppNotFound from './AppNotFound.jsx';
 
 const AppDetails = () => {
   const { id } = useParams();
@@ -15,6 +18,13 @@ const AppDetails = () => {
         const foundApp = data.find(app => app.id === parseInt(id));
         setApp(foundApp);
         setLoading(false);
+        
+        // Check if app is already installed (only if app exists)
+        if (foundApp) {
+          const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]');
+          const isInstalled = installedApps.some(installedApp => installedApp.id === foundApp.id);
+          setInstalled(isInstalled);
+        }
       })
       .catch(error => {
         console.error('Error fetching app:', error);
@@ -23,22 +33,29 @@ const AppDetails = () => {
   }, [id]);
 
   const handleInstall = () => {
+    // Get existing installed apps
+    const installedApps = JSON.parse(localStorage.getItem('installedApps') || '[]');
+    
+    // Add current app to installed apps
+    installedApps.push(app);
+    localStorage.setItem('installedApps', JSON.stringify(installedApps));
+    
     setInstalled(true);
+    toast.success('App installed successfully!', {
+      position: 'top-right',
+      autoClose: 3000,
+    });
   };
 
   if (loading) {
     return <div className="text-center py-16">Loading...</div>;
   }
 
+  // Show AppNotFound component if app doesn't exist
   if (!app) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-bold">App Not Found</h2>
-      </div>
-    );
+    return <AppNotFound />;
   }
 
-  // Prepare chart data
   const chartData = app.ratings.map(rating => ({
     name: rating.name,
     count: rating.count
@@ -46,10 +63,9 @@ const AppDetails = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-6">
+      <ToastContainer />
       <div className="container mx-auto">
-        {/* App Info Section */}
         <div className="bg-white rounded-lg p-8 mb-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* App Image */}
           <div className="flex justify-center items-start">
             <img 
               src={app.image} 
@@ -58,14 +74,12 @@ const AppDetails = () => {
             />
           </div>
 
-          {/* App Details */}
           <div className="md:col-span-2">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">{app.title}</h1>
             <p className="text-gray-600 mb-6">
               Developed by <span className="text-purple-600 font-medium">{app.companyName}</span>
             </p>
 
-            {/* Stats */}
             <div className="grid grid-cols-3 gap-6 mb-6">
               <div>
                 <div className="flex items-center gap-2 mb-2">
@@ -105,7 +119,6 @@ const AppDetails = () => {
               </div>
             </div>
 
-            {/* Install Button */}
             <button
               onClick={handleInstall}
               disabled={installed}
@@ -120,7 +133,6 @@ const AppDetails = () => {
           </div>
         </div>
 
-        {/* Ratings Chart */}
         <div className="bg-white rounded-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Ratings</h2>
           <ResponsiveContainer width="100%" height={300}>
@@ -134,7 +146,6 @@ const AppDetails = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Description */}
         <div className="bg-white rounded-lg p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Description</h2>
           <p className="text-gray-700 leading-relaxed">{app.description}</p>
