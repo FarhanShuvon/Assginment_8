@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import downloadIcon from '../assets/icon-downloads.png';
 import starIcon from '../assets/icon-ratings.png';
+import Loading from './Loading';
 
 const AllApps = () => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const AllApps = () => {
   }, [searchQuery, apps]);
 
   if (loading) {
-    return <div className="text-center py-16">Loading...</div>;
+    return <Loading />;
   }
 
   return (
@@ -50,14 +51,15 @@ const AllApps = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-between mb-8">
+          {/* FIXED: Search bar now responsive */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
                 ({filteredApps.length}) Apps Found
               </h3>
             </div>
 
-            <div className="relative w-80">
+            <div className="relative w-full md:w-80">
               <input
                 type="text"
                 placeholder="search Apps"

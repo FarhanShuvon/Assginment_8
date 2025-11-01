@@ -54,18 +54,19 @@ const Installation = () => {
             </p>
           </div>
 
-          <div className="flex items-center justify-between mb-8">
+          {/* FIXED: Responsive layout */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-8">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
                 {installedApps.length} Apps Found
               </h3>
             </div>
 
-            <div className="relative">
+            <div className="relative w-full md:w-auto">
               <select
                 value={sortOrder}
                 onChange={(e) => handleSort(e.target.value)}
-                className="px-6 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
+                className="w-full md:w-auto px-6 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer"
               >
                 <option value="default">Sort By Size</option>
                 <option value="high-low">High-Low</option>
@@ -79,19 +80,19 @@ const Installation = () => {
               {installedApps.map(app => (
                 <div
                   key={app.id}
-                  className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow flex items-center justify-between"
+                  className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-center justify-between gap-4"
                 >
-                  <div className="flex items-center gap-6">
+                  <div className="flex flex-col md:flex-row items-center gap-6 w-full md:w-auto">
                     <img
                       src={app.image}
                       alt={app.title}
                       className="w-20 h-20 object-cover rounded-lg"
                     />
-                    <div>
+                    <div className="text-center md:text-left">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         {app.title}
                       </h3>
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-4 justify-center md:justify-start">
                         <div className="flex items-center gap-1 text-green-500">
                           <img src={downloadIcon} alt="downloads" className="w-4 h-4" />
                           <span className="text-sm font-medium">
@@ -110,7 +111,7 @@ const Installation = () => {
                   </div>
                   <button
                     onClick={() => handleUninstall(app.id)}
-                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                    className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium transition-colors w-full md:w-auto"
                   >
                     Uninstall
                   </button>
