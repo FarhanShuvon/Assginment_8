@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import downloadIcon from '../assets/icon-downloads.png';
 import starIcon from '../assets/icon-ratings.png';
 
 const AllApps = () => {
+  const navigate = useNavigate();
   const [apps, setApps] = useState([]);
   const [filteredApps, setFilteredApps] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,7 +24,6 @@ const AllApps = () => {
       });
   }, []);
 
-  // Live search functionality
   useEffect(() => {
     if (searchQuery === '') {
       setFilteredApps(apps);
@@ -42,7 +43,6 @@ const AllApps = () => {
     <div className="min-h-screen bg-gray-50">
       <section className="py-16 px-6">
         <div className="container mx-auto">
-          {/* Title Section */}
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-3">Our All Applications</h1>
             <p className="text-gray-600 text-lg">
@@ -50,16 +50,13 @@ const AllApps = () => {
             </p>
           </div>
 
-          {/* Search and Stats Section */}
           <div className="flex items-center justify-between mb-8">
-            {/* Apps Count */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
                 ({filteredApps.length}) Apps Found
               </h3>
             </div>
 
-            {/* Search Bar */}
             <div className="relative w-80">
               <input
                 type="text"
@@ -84,15 +81,14 @@ const AllApps = () => {
             </div>
           </div>
 
-          {/* Apps Grid */}
           {filteredApps.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredApps.map(app => (
                 <div
                   key={app.id}
+                  onClick={() => navigate(`/app/${app.id}`)}
                   className="bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
                 >
-                  {/* App Image */}
                   <div className="bg-gray-200 rounded-lg mb-4 h-48 flex items-center justify-center overflow-hidden">
                     <img
                       src={app.image}
@@ -101,14 +97,11 @@ const AllApps = () => {
                     />
                   </div>
 
-                  {/* App Title */}
                   <h3 className="font-semibold text-gray-900 mb-3 text-base">
                     {app.title}
                   </h3>
 
-                  {/* Downloads and Rating */}
                   <div className="flex items-center justify-between">
-                    {/* Downloads */}
                     <div className="flex items-center gap-1 text-green-500">
                       <img src={downloadIcon} alt="downloads" className="w-4 h-4" />
                       <span className="text-sm font-medium">
@@ -118,7 +111,6 @@ const AllApps = () => {
                       </span>
                     </div>
 
-                    {/* Rating */}
                     <div className="flex items-center gap-1 text-orange-500">
                       <img src={starIcon} alt="rating" className="w-4 h-4" />
                       <span className="text-sm font-medium">{app.ratingAvg}</span>
@@ -128,13 +120,10 @@ const AllApps = () => {
               ))}
             </div>
           ) : (
-            // No App Found Message
             <div className="text-center py-20">
               <div className="text-6xl mb-4">😔</div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">No App Found</h3>
-              <p className="text-gray-600">
-                Try searching with different keywords
-              </p>
+              <p className="text-gray-600">Try searching with different keywords</p>
             </div>
           )}
         </div>

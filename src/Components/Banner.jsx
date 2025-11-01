@@ -4,7 +4,7 @@ import heroImage from '../assets/hero.png';
 
 const Banner = () => {
   return (
-    <section className="bg-gray-100  px-6">
+    <section className="bg-gray-100  px-6 mt-10">
       <div className="container mx-auto text-center">
         {/* Heading */}
         <h1 className="text-5xl font-bold text-gray-900 mb-4">
